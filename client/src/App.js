@@ -10,39 +10,59 @@ import { UserList } from "./components/UserList";
 
 
 function App() {
-  const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    userService.getAll()
-      .then(users => {
-        setUsers(users);
-      })
-      .catch(err => {
-        console.log('Error' + err);
-      })
-  }, []);
+    useEffect(() => {
+        userService.getAll()
+            .then(users => {
+                setUsers(users);
+            })
+            .catch(err => {
+                console.log('Error' + err);
+            })
+    }, []);
 
-  const onUserCreateSubmit = (e) => {
+    const onUserCreateSubmit = async (e) => {
+        e.preventDefault();
 
-  }
 
-  return (
-    <>
-      <Header />
 
-      <main className="main">
-        <section className="card users-container">
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData);
 
-          <Search />
 
-          <UserList users={users} onUserCreateSubmit={onUserCreateSubmit} />
+        const createdUser = await userService.create(data);
 
-        </section>
-      </main>
+        setUsers(state => [...state, createdUser]);
+    }
 
-      <Footer />
-    </>
-  );
+    const onUserDelete = async (userId) => {
+        await userService.remove(userId);
+
+        setUsers(state => state.filter(x => x._id !== userId));
+    }
+
+    return (
+        <>
+            <Header />
+
+            <main className="main">
+                <section className="card users-container">
+
+                    <Search />
+
+                    <UserList
+                        users={users}
+                        onUserCreateSubmit={onUserCreateSubmit}
+                        onUserDelete={onUserDelete}
+                    />
+
+                </section>
+            </main>
+
+            <Footer />
+        </>
+    );
 }
 
 export default App;
