@@ -20,7 +20,11 @@ function App() {
       .catch(err => {
         console.log('Error' + err);
       })
-  }, [])
+  }, []);
+
+  const onUserCreateSubmit = (e) => {
+
+  }
 
   return (
     <>
@@ -31,7 +35,7 @@ function App() {
 
           <Search />
 
-          <UserList users={users} />
+          <UserList users={users} onUserCreateSubmit={onUserCreateSubmit} />
 
         </section>
       </main>
