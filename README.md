@@ -1,2 +1,2 @@
 # react-user-list
-User List made with React
+User List made with ReactJS for SoftUni's ReactJS Course.
